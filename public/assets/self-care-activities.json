@@ -1,0 +1,362 @@
+{
+  "activities": [
+    {
+      "id": "breathing-exercise",
+      "title": "Deep Breathing Exercise",
+      "titleFil": "Malalim na Paghinga",
+      "description": "Take 5 minutes to practice deep breathing",
+      "descriptionFil": "Maglaan ng 5 minuto para sa malalim na paghinga",
+      "icon": "bi-wind",
+      "category": "mindfulness",
+      "duration": 5,
+      "difficulty": "easy",
+      "hasTimer": true,
+      "reminderTime": "09:00",
+      "tutorial": [
+        "Find a comfortable seated position",
+        "Close your eyes or soften your gaze",
+        "Breathe in slowly through your nose for 4 counts",
+        "Hold your breath for 4 counts",
+        "Exhale slowly through your mouth for 6 counts",
+        "Repeat for 5 minutes"
+      ],
+      "tutorialFil": [
+        "Humanap ng komportableng pwesto",
+        "Ipikit ang iyong mga mata",
+        "Huminga nang malalim sa ilong (4 counts)",
+        "Pigilan ang hininga (4 counts)",
+        "Huminga palabas sa bibig (6 counts)",
+        "Ulitin ng 5 minuto"
+      ],
+      "streak": {
+        "type": "daily",
+        "target": 7,
+        "message": "Complete this for 7 days in a row",
+        "messageFil": "Gawin ito ng 7 araw na sunod-sunod"
+      }
+    },
+    {
+      "id": "gratitude-journal",
+      "title": "Gratitude Journal",
+      "titleFil": "Pasasalamat Journal",
+      "description": "Write down 3 things you're grateful for",
+      "descriptionFil": "Isulat ang 3 bagay na iyong pinasasalamatan",
+      "icon": "bi-journal-text",
+      "category": "reflection",
+      "duration": 10,
+      "difficulty": "easy",
+      "hasJournal": true,
+      "reminderTime": "08:00",
+      "journalPrompt": "What are 3 things you're grateful for today?",
+      "journalPromptFil": "Ano ang 3 bagay na iyong pinasasalamatan ngayong araw?",
+      "streak": {
+        "type": "daily",
+        "target": 7,
+        "message": "Practice gratitude for 7 days",
+        "messageFil": "Magsanay ng pasasalamat ng 7 araw"
+      }
+    },
+    {
+      "id": "morning-stretch",
+      "title": "Morning Stretch",
+      "titleFil": "Umaga na Pag-unat",
+      "description": "Start your day with gentle stretching",
+      "descriptionFil": "Simulan ang araw sa mahinang pag-unat",
+      "icon": "bi-person-arms-up",
+      "category": "physical",
+      "duration": 10,
+      "difficulty": "easy",
+      "hasTimer": true,
+      "reminderTime": "07:00",
+      "tutorial": [
+        "Stand with feet shoulder-width apart",
+        "Reach arms overhead and stretch upward",
+        "Gently bend side to side",
+        "Roll your shoulders backward 5 times",
+        "Touch your toes (or as far as comfortable)",
+        "Hold each stretch for 20-30 seconds"
+      ],
+      "tutorialFil": [
+        "Tumayo, paghiwalayin ang paa",
+        "Itaas ang mga braso at mag-stretch",
+        "Yumuko sa gilid (kanan at kaliwa)",
+        "I-roll ang balikat pabalik (5 beses)",
+        "Hawakan ang daliri ng paa (kung kaya)",
+        "Hawakan ang bawat stretch ng 20-30 segundo"
+      ],
+      "streak": {
+        "type": "daily",
+        "target": 7,
+        "message": "Stretch every morning for 7 days",
+        "messageFil": "Mag-unat tuwing umaga ng 7 araw"
+      }
+    },
+    {
+      "id": "hydration-check",
+      "title": "Hydration Check",
+      "titleFil": "Pag-inom ng Tubig",
+      "description": "Track your 8 glasses of water today",
+      "descriptionFil": "I-track ang 8 basong tubig mo ngayon",
+      "icon": "bi-droplet-fill",
+      "category": "physical",
+      "duration": 0,
+      "difficulty": "easy",
+      "hasGlassTracker": true,
+      "reminderTime": "12:00",
+      "streak": {
+        "type": "daily",
+        "target": 7,
+        "message": "Stay hydrated for 7 days",
+        "messageFil": "Manatiling hydrated ng 7 araw"
+      }
+    },
+    {
+      "id": "mindful-walk",
+      "title": "Mindful Walk",
+      "titleFil": "Malay na Paglalakad",
+      "description": "Take a 15-minute walk and observe your surroundings",
+      "descriptionFil": "Maglakad ng 15 minuto at obserbahan ang paligid",
+      "icon": "bi-person-walking",
+      "category": "physical",
+      "duration": 15,
+      "difficulty": "medium",
+      "hasTimer": true,
+      "reminderTime": "17:00",
+      "tutorial": [
+        "Find a safe, comfortable place to walk",
+        "Start walking at a comfortable pace",
+        "Notice the sensation of your feet touching the ground",
+        "Observe your surroundings - sights, sounds, smells",
+        "If your mind wanders, gently bring attention back to walking",
+        "Continue for 15 minutes"
+      ],
+      "tutorialFil": [
+        "Humanap ng ligtas at komportableng lugar para maglakad",
+        "Magsimulang maglakad sa komportableng bilis",
+        "Pansinin ang pakiramdam ng paa sa lupa",
+        "Obserbahan ang paligid - tanawin, tunog, amoy",
+        "Kung gumala ang isip, bumalik sa paglalakad",
+        "Magpatuloy ng 15 minuto"
+      ],
+      "streak": {
+        "type": "every-3-days",
+        "target": 3,
+        "message": "Walk mindfully 3 times this week",
+        "messageFil": "Maglakad nang malay 3 beses ngayong linggo"
+      }
+    },
+    {
+      "id": "digital-detox",
+      "title": "Digital Detox",
+      "titleFil": "Digital Detox",
+      "description": "Take 30 minutes away from screens",
+      "descriptionFil": "Lumayo sa screen ng 30 minuto",
+      "icon": "bi-phone-vibrate",
+      "category": "mindfulness",
+      "duration": 30,
+      "difficulty": "medium",
+      "hasTimer": true,
+      "reminderTime": "20:00",
+      "tutorial": [
+        "Put your phone and devices away",
+        "Find a comfortable place to relax",
+        "Engage in a screen-free activity",
+        "Read, walk, meditate, or spend time with loved ones",
+        "Notice how you feel without screens",
+        "Continue for 30 minutes"
+      ],
+      "tutorialFil": [
+        "Ilagay ang iyong phone at devices",
+        "Humanap ng komportableng lugar",
+        "Gumawa ng activity na walang screen",
+        "Magbasa, maglakad, mag-meditate, o makipag-ugnayan",
+        "Pansinin kung paano ka nakakaramdam",
+        "Magpatuloy ng 30 minuto"
+      ],
+      "streak": {
+        "type": "every-3-days",
+        "target": 3,
+        "message": "Disconnect 3 times this week",
+        "messageFil": "Mag-disconnect 3 beses ngayong linggo"
+      }
+    },
+    {
+      "id": "meditation",
+      "title": "Meditation Session",
+      "titleFil": "Meditasyon",
+      "description": "Practice 10 minutes of guided meditation",
+      "descriptionFil": "Mag-practice ng 10 minutong meditasyon",
+      "icon": "bi-yin-yang",
+      "category": "mindfulness",
+      "duration": 10,
+      "difficulty": "medium",
+      "hasTimer": true,
+      "reminderTime": "06:00",
+      "tutorial": [
+        "Sit comfortably with your back straight",
+        "Rest your hands on your lap or knees",
+        "Close your eyes gently",
+        "Focus on your natural breathing",
+        "When thoughts arise, acknowledge them and return to your breath",
+        "Continue for 10 minutes"
+      ],
+      "tutorialFil": [
+        "Umupo nang komportable, tuwid ang likod",
+        "Ipatong ang kamay sa hita",
+        "Ipikit ang mata",
+        "Tumuon sa natural na paghinga",
+        "Kapag may naisip, tanggapin at bumalik sa paghinga",
+        "Magpatuloy ng 10 minuto"
+      ],
+      "streak": {
+        "type": "daily",
+        "target": 7,
+        "message": "Meditate daily for 7 days",
+        "messageFil": "Mag-meditate araw-araw ng 7 araw"
+      }
+    },
+    {
+      "id": "healthy-meal",
+      "title": "Healthy Meal",
+      "titleFil": "Malusog na Pagkain",
+      "description": "Prepare and enjoy a nutritious meal",
+      "descriptionFil": "Maghanda at tamasahin ang masustansyang pagkain",
+      "icon": "bi-egg-fried",
+      "category": "physical",
+      "duration": 30,
+      "difficulty": "medium",
+      "reminderTime": "12:30",
+      "tutorial": [
+        "Choose a balanced meal with protein, vegetables, and whole grains",
+        "Include colorful vegetables for nutrients",
+        "Prepare food mindfully without distractions",
+        "Eat slowly and savor each bite",
+        "Drink water with your meal",
+        "Enjoy the experience of nourishing your body"
+      ],
+      "tutorialFil": [
+        "Pumili ng balanced meal na may protein, gulay, at whole grains",
+        "Kasama ang maraming kulay ng gulay",
+        "Maghanda nang maingat nang walang distraksyon",
+        "Kumain nang mabagal at lasapin ang bawat kagat",
+        "Uminom ng tubig habang kumakain",
+        "Tamasahin ang pagpapakain sa iyong katawan"
+      ],
+      "streak": {
+        "type": "daily",
+        "target": 7,
+        "message": "Eat healthy for 7 days",
+        "messageFil": "Kumain ng malusog ng 7 araw"
+      }
+    },
+    {
+      "id": "creative-time",
+      "title": "Creative Time",
+      "titleFil": "Oras para sa Sining",
+      "description": "Spend time on a creative hobby",
+      "descriptionFil": "Maglaan ng oras sa creative na libangan",
+      "icon": "bi-palette",
+      "category": "creative",
+      "duration": 20,
+      "difficulty": "easy",
+      "hasTimer": true,
+      "reminderTime": "18:00",
+      "tutorial": [
+        "Choose a creative activity you enjoy",
+        "Set up your space with materials",
+        "Turn off distractions and notifications",
+        "Let your creativity flow without judgment",
+        "Enjoy the process, not just the result",
+        "Continue for 20 minutes"
+      ],
+      "tutorialFil": [
+        "Pumili ng creative activity na gusto mo",
+        "Ihanda ang iyong espasyo at materials",
+        "Patayin ang distraksyon at notifications",
+        "Hayaan ang iyong creativity na dumaloy",
+        "Tamasahin ang proseso, hindi lang resulta",
+        "Magpatuloy ng 20 minuto"
+      ],
+      "streak": {
+        "type": "every-3-days",
+        "target": 3,
+        "message": "Be creative 3 times this week",
+        "messageFil": "Maging creative 3 beses ngayong linggo"
+      }
+    },
+    {
+      "id": "social-connection",
+      "title": "Social Connection",
+      "titleFil": "Pakikipag-ugnayan",
+      "description": "Reach out to a friend or family member",
+      "descriptionFil": "Makipag-ugnayan sa kaibigan o pamilya",
+      "icon": "bi-chat-heart",
+      "category": "social",
+      "duration": 0,
+      "difficulty": "easy",
+      "reminderTime": "19:00",
+      "streak": {
+        "type": "every-3-days",
+        "target": 3,
+        "message": "Connect with others 3 times this week",
+        "messageFil": "Makipag-ugnayan 3 beses ngayong linggo"
+      }
+    },
+    {
+      "id": "evening-reflection",
+      "title": "Evening Reflection",
+      "titleFil": "Gabi na Pagninilay",
+      "description": "Reflect on your day before bed",
+      "descriptionFil": "Mag-isip tungkol sa iyong araw bago matulog",
+      "icon": "bi-moon-stars",
+      "category": "reflection",
+      "duration": 10,
+      "difficulty": "easy",
+      "hasJournal": true,
+      "reminderTime": "21:00",
+      "journalPrompt": "How was your day? What are you grateful for?",
+      "journalPromptFil": "Paano ang iyong araw? Ano ang iyong pinasasalamatan?",
+      "streak": {
+        "type": "daily",
+        "target": 7,
+        "message": "Reflect every evening for 7 days",
+        "messageFil": "Mag-isip tuwing gabi ng 7 araw"
+      }
+    },
+    {
+      "id": "power-nap",
+      "title": "Power Nap",
+      "titleFil": "Maikling Tulog",
+      "description": "Take a 20-minute power nap",
+      "descriptionFil": "Matulog ng 20 minuto",
+      "icon": "bi-moon",
+      "category": "physical",
+      "duration": 20,
+      "difficulty": "easy",
+      "hasTimer": true,
+      "reminderTime": "14:00",
+      "tutorial": [
+        "Find a quiet, comfortable place to rest",
+        "Set a timer for 20 minutes",
+        "Lie down or recline comfortably",
+        "Close your eyes and relax",
+        "Let yourself drift off to sleep",
+        "Wake up refreshed after 20 minutes"
+      ],
+      "tutorialFil": [
+        "Humanap ng tahimik at komportableng lugar",
+        "Itakda ang timer sa 20 minuto",
+        "Humiga o umupo nang komportable",
+        "Ipikit ang mata at mag-relax",
+        "Hayaan ang iyong sarili na matulog",
+        "Gumising na refreshed pagkatapos ng 20 minuto"
+      ],
+      "streak": {
+        "type": "every-3-days",
+        "target": 3,
+        "message": "Rest when needed 3 times this week",
+        "messageFil": "Magpahinga kung kailangan 3 beses ngayong linggo"
+      }
+    }
+  ]
+}

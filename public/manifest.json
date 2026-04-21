@@ -1,0 +1,52 @@
+{
+  "name": "Alwan - Mental Health Tracker",
+  "short_name": "Alwan",
+  "description": "Track your mood, journal your thoughts, and manage your mental wellness",
+  "start_url": "/dashboard.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/logo/appicon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/logo/appicon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "lifestyle", "productivity"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Quick Mood Check",
+      "short_name": "Mood",
+      "description": "Log your current mood",
+      "url": "/dashboard.html#mood",
+      "icons": [
+        {
+          "src": "/assets/logo/appicon.jpg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "New Journal Entry",
+      "short_name": "Journal",
+      "description": "Create a new journal entry",
+      "url": "/dashboard.html#journal",
+      "icons": [
+        {
+          "src": "/assets/logo/appicon.jpg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
