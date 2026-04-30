@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Capybara Virtual Pet</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+      :root {
+        --pet-ui-border: rgba(15, 23, 42, 0.12);
+        --pet-ui-shadow: 0 20px 45px rgba(15, 23, 42, 0.16);
+      }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: #f2f2f2;
+        font-family: "Segoe UI", "Inter", sans-serif;
+      }
+      * {
+        -webkit-tap-highlight-color: transparent;
+      }
+      #app {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+      canvas {
+        display: block;
+        touch-action: none;
+      }
+      button, input, select, textarea, a {
+        -webkit-tap-highlight-color: transparent;
+      }
+      #panel {
+        position: fixed;
+        bottom: 12px;
+        left: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 10px 12px;
+        border-radius: 8px;
+        font: 14px/1.2 Arial, sans-serif;
+        color: #222;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        display: grid;
+        gap: 8px;
+        min-width: 200px;
+        z-index: 10;
+        display: none;
+      }
+      #panel .row {
+        display: grid;
+        gap: 6px;
+      }
+      #settings {
+        display: grid;
+        gap: 8px;
+      }
+      #settings summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      #settings[open] {
+        padding-top: 4px;
+      }
+      .is-hidden {
+        display: none !important;
+      }
+      .pet-setup-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 25;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        padding: 0;
+        background: #ffffff;
+      }
+      .pet-setup-card {
+        width: 100%;
+        height: 100dvh;
+        background: #ffffff;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 20px;
+        pointer-events: auto;
+        box-sizing: border-box;
+        overflow: auto;
+      }
+      .pet-tutorial-full {
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .pet-setup-title {
+        margin: 0;
+        font-size: 1.12rem;
+        font-weight: 800;
+        color: #0f172a;
+      }
+      .pet-setup-sub {
+        margin: 6px 0 0;
+        color: #475569;
+        font-size: 0.9rem;
+      }
+      .pet-setup-note {
+        margin: 12px 0 0;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        font-size: 0.82rem;
+        color: #334155;
+      }
+      .pet-step {
+        margin-top: 14px;
+      }
+      .pet-step h3 {
+        margin: 0 0 10px;
+        font-size: 0.95rem;
+        color: #0f172a;
+      }
+      .pet-card-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 10px;
+      }
+      .pet-select-card,
+      .pet-gender-btn {
+        border-radius: 14px;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        padding: 12px;
+        cursor: pointer;
+        font-weight: 700;
+        color: #1e293b;
+        text-align: left;
+        transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+      }
+      .pet-select-card:hover,
+      .pet-gender-btn:hover {
+        transform: translateY(-1px);
+        border-color: #94a3b8;
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+      }
+      .pet-select-card.active,
+      .pet-gender-btn.active {
+        border-color: #0f172a;
+        box-shadow: inset 0 0 0 1px #0f172a;
+      }
+      .pet-card-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #0f766e;
+        background: #ecfeff;
+        border: 1px solid #99f6e4;
+        border-radius: 999px;
+        padding: 2px 8px;
+        margin-top: 8px;
+      }
+      .pet-setup-actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .pet-btn {
+        border: 0;
+        border-radius: 10px;
+        padding: 9px 12px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 0.86rem;
+      }
+      .pet-btn.secondary {
+        background: #e2e8f0;
+        color: #0f172a;
+      }
+      .pet-btn.primary {
+        background: #0f172a;
+        color: #fff;
+      }
+      .pet-name-input {
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 12px;
+        border: 1px solid #cbd5e1;
+        background: #fff;
+        padding: 12px;
+        font-size: 0.95rem;
+        color: #0f172a;
+      }
+      .pet-setup-hud {
+        position: fixed;
+        inset: 0;
+        z-index: 24;
+        pointer-events: none;
+      }
+      .pet-setup-panel {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 18px;
+        width: min(760px, calc(100vw - 24px));
+        background: transparent;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+        pointer-events: auto;
+      }
+      .pet-setup-stack {
+        display: grid;
+        gap: 8px;
+      }
+      .pet-picker-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .pet-picker-label {
+        text-align: left;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .pet-picker-label strong {
+        color: #0f172a;
+        font-size: 0.88rem;
+      }
+      .pet-picker-label span {
+        font-size: 0.74rem;
+        color: #64748b;
+      }
+      .pet-gender-toggle {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .pet-skin-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+      .pet-skin-label {
+        font-size: 13px;
+        color: #64748b;
+        white-space: nowrap;
+      }
+      .pet-skin-swatches {
+        display: flex;
+        gap: 8px;
+      }
+      .pet-skin-swatch {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: border-color 0.15s, transform 0.15s;
+      }
+      .pet-skin-swatch:hover {
+        transform: scale(1.15);
+      }
+      .pet-skin-swatch.active {
+        border-color: #0f172a;
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f172a;
+      }
+      .pet-gender-icon-btn {
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        background: #fff;
+        color: #0f172a;
+        font-weight: 700;
+        width: 38px;
+        height: 38px;
+        padding: 0;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pet-gender-icon-btn.active {
+        border-color: #0f172a;
+        box-shadow: inset 0 0 0 1px #0f172a;
+      }
+      .pet-setup-name-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .pet-bottom-note {
+        margin: 0;
+        font-size: 0.75rem;
+        color: #64748b;
+      }
+      .pet-coin-pill {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255,255,255,0.85);
+        border: 1px solid rgba(255,255,255,0.6);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #0f172a;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        pointer-events: none;
+        z-index: 21;
+      }
+      .pet-tasks-btn {
+        position: absolute;
+        top: 54px;
+        left: 14px;
+        background: rgba(255,255,255,0.85);
+        border: 1px solid rgba(255,255,255,0.6);
+        border-radius: 999px;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        pointer-events: auto;
+        z-index: 21;
+      }
+
+      /* Daily Tasks Modal */
+      .pet-tasks-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        align-items: stretch;
+        justify-content: stretch;
+        background: #fff;
+      }
+      .pet-tasks-modal.open { display: flex; }
+      .pet-tasks-sheet {
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+        background: #fff;
+        border-radius: 0;
+        padding: 20px 18px 0;
+        overflow-y: auto;
+        scrollbar-width: none;
+        box-sizing: border-box;
+      }
+      .pet-tasks-sheet::-webkit-scrollbar { display: none; }
+      .pet-tasks-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-bottom: 32px;
+      }
+      .pet-tasks-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+      .pet-tasks-header h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 800;
+        color: #0f172a;
+        flex: 1;
+        text-align: center;
+      }
+      .pet-tasks-close {
+        background: none;
+        border: none;
+        font-size: 1.3rem;
+        cursor: pointer;
+        color: #1e293b;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+      }
+      .pet-task-card {
+        border: none;
+        border-radius: 16px;
+        padding: 14px 16px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 14px;
+        background: var(--tc, #f1f5f9);
+        transition: filter 0.15s;
+        position: relative;
+        width: 100%;
+        text-align: left;
+      }
+      .pet-task-card:active { filter: brightness(0.93); }
+      .pet-task-card.done { opacity: 0.5; cursor: default; }
+      .pet-task-card i {
+        font-size: 1.5rem;
+        color: var(--ti, #64748b);
+        flex-shrink: 0;
+        width: 32px;
+        text-align: center;
+      }
+      .pet-task-card .tc-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .pet-task-card .tc-name {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1.25;
+        display: block;
+      }
+      .pet-task-card .tc-reward {
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin-top: 2px;
+      }
+      .pet-task-card .tc-arrow {
+        font-size: 0.9rem;
+        color: #94a3b8;
+        flex-shrink: 0;
+      }
+      .pet-task-done-badge {
+        font-size: 1rem;
+        color: #22c55e;
+        flex-shrink: 0;
+      }
+      .pet-main-ui {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 20;
+      }
+      .pet-right-rail {
+        position: absolute;
+        right: 16px;
+        bottom: 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        gap: 10px;
+      }
+      .pet-right-rail-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .pet-rail-btn {
+        pointer-events: auto;
+        width: 50px;
+        height: 50px;
+        border-radius: 999px;
+        border: 1px solid var(--pet-ui-border);
+        background: rgba(255, 255, 255, 0.38);
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+      }
+      .pet-rail-btn.active {
+        border-color: #0f172a;
+        box-shadow: inset 0 0 0 1px #0f172a;
+      }
+      .pet-rail-icon-img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        pointer-events: none;
+      }
+      .pet-drawer {
+        pointer-events: auto;
+        position: absolute;
+        right: 78px;
+        top: 14px;
+        width: min(320px, calc(100vw - 106px));
+        max-height: calc(100vh - 28px);
+        overflow: auto;
+        border-radius: 16px;
+        border: 1px solid var(--pet-ui-border);
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: var(--pet-ui-shadow);
+        padding: 14px;
+      }
+      .pet-drawer.pet-drawer-action {
+        width: min(260px, calc(100vw - 110px));
+        max-height: min(260px, calc(100vh - 24px));
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        overflow: visible;
+        transform: translateX(16px);
+        opacity: 0;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+      }
+      .pet-drawer.pet-drawer-action.pet-drawer-action-open {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      .pet-drawer h3 {
+        margin: 0 0 10px;
+        font-size: 0.95rem;
+        color: #0f172a;
+      }
+      .pet-mini-text {
+        margin: 0 0 10px;
+        font-size: 0.82rem;
+        color: #64748b;
+      }
+      .pet-action-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .pet-action-btn {
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.38);
+        color: #0f172a;
+        font-weight: 700;
+        padding: 10px 6px;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      }
+      .pet-list {
+        display: grid;
+        gap: 8px;
+      }
+      .pet-list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 9px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: #fff;
+      }
+      .pet-list-item strong {
+        color: #0f172a;
+        font-size: 0.86rem;
+      }
+      .pet-list-item span {
+        color: #64748b;
+        font-size: 0.76rem;
+      }
+      .pet-stat-row {
+        margin-bottom: 10px;
+      }
+      .pet-stat-head {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        color: #334155;
+        margin-bottom: 4px;
+      }
+      .pet-stat-bar {
+        width: 100%;
+        height: 8px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        overflow: hidden;
+      }
+      .pet-stat-fill {
+        height: 100%;
+        border-radius: inherit;
+      }
+      #hungerFill { background: linear-gradient(90deg, #22c55e, #10b981); }
+      #energyFill { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+      #happinessFill { background: linear-gradient(90deg, #f59e0b, #f97316); }
+      @media (max-width: 760px) {
+        .pet-drawer {
+          width: min(320px, calc(100vw - 90px));
+        }
+        .pet-setup-card { padding: 16px; }
+        .pet-setup-panel { bottom: 12px; width: calc(100vw - 16px); }
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="petSetupOverlay" class="pet-setup-overlay is-hidden">
+      <div class="pet-setup-card pet-tutorial-full">
+        <h2 class="pet-setup-title">Virtual Pet Setup</h2>
+        <p class="pet-setup-sub">Start with tutorial first. Then choose pet, gender, and name on-screen with the 3D model.</p>
+        <p class="pet-setup-note">Tip: Drag the scene to rotate the idle pet preview.</p>
+        <section class="pet-step">
+          <h3>Tutorial</h3>
+          <div style="display:grid;gap:8px;font-size:0.88rem;color:#334155;">
+            <div>1. Continue to choose pet while viewing the live 3D model.</div>
+            <div>2. Toggle male/female icon and enter pet name.</div>
+            <div>3. Proceed to deploy your pet into the environment.</div>
+          </div>
+          <div class="pet-setup-actions">
+            <button type="button" id="petStep0Next" class="pet-btn primary">Continue</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="petSetupHud" class="pet-setup-hud is-hidden">
+      <div class="pet-setup-panel">
+        <section class="pet-setup-stack">
+          <div class="pet-picker-row">
+            <div class="pet-picker-label">
+              <strong>Capybara</strong>
+            </div>
+            <div class="pet-gender-toggle">
+              <button type="button" id="petGenderMale" class="pet-gender-icon-btn active" data-gender="male" title="Male">♂</button>
+            </div>
+          </div>
+          <div class="pet-skin-row">
+            <span class="pet-skin-label">Color</span>
+            <div class="pet-skin-swatches">
+              <button class="pet-skin-swatch active" data-skin="default" title="Default Brown" style="background:#c68642;"></button>
+              <button class="pet-skin-swatch" data-skin="albino" title="Purple" style="background:#9b59b6; border-color:#cbd5e1;"></button>
+              <button class="pet-skin-swatch" data-skin="gray" title="Gray" style="background:#9e9e9e;"></button>
+              <button class="pet-skin-swatch" data-skin="dark" title="Dark Brown" style="background:#5c3317;"></button>
+              <button class="pet-skin-swatch" data-skin="orange" title="Orange" style="background:#e07b39;"></button>
+            </div>
+          </div>
+          <div class="pet-setup-name-row">
+          <input id="petNameInput" class="pet-name-input" type="text" maxlength="24" placeholder="Enter pet name..." value="Cappy" />
+            <button type="button" id="petFinishSetup" class="pet-btn primary">Proceed</button>
+            <p class="pet-bottom-note">Proceed will deploy the pet in the environment.</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="petMainUi" class="pet-main-ui is-hidden">
+      <aside id="petDrawer" class="pet-drawer is-hidden"></aside>
+
+      <!-- Heart Coin Balance — top left -->
+      <div id="petCoinPill" class="pet-coin-pill">
+        <img src="/assets/logo/game-coin.png" style="width:18px;height:18px;object-fit:contain;" alt="coins">
+        <span id="petCoinBalance">0</span>
+      </div>
+
+      <div class="pet-right-rail">
+        <div class="pet-right-rail-group">
+          <button type="button" id="openTasksPanel" class="pet-rail-btn" aria-label="Daily Tasks">
+            <img class="pet-rail-icon-img" src="/assets/logo/task.png" alt="tasks">
+          </button>
+          <button type="button" id="openActionPanel" class="pet-rail-btn" aria-label="Open action panel">
+            <img class="pet-rail-icon-img" src="/assets/logo/icons8-capybara-100.png" alt="">
+          </button>
+          <button type="button" id="openShopPanel" class="pet-rail-btn" aria-label="Open shop panel">
+            <img class="pet-rail-icon-img" src="/assets/logo/store.png" alt="">
+          </button>
+          <button type="button" id="openInventoryPanel" class="pet-rail-btn" aria-label="Open inventory panel">
+            <img class="pet-rail-icon-img" src="/assets/logo/school-bag.png" alt="">
+          </button>
+          <button type="button" id="openInfoPanel" class="pet-rail-btn" aria-label="Open pet info panel">
+            <img class="pet-rail-icon-img" src="/assets/logo/capybara.png" alt="">
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="panel">
+      <div class="row">
+        <label for="clip">Animation</label>
+        <select id="clip">
+          <option value="idle">idle</option>
+          <option value="walk">walk</option>
+          <option value="run">run</option>
+          <option value="jump">jump</option>
+          <option value="lie">lie</option>
+        </select>
+      </div>
+      <details id="settings">
+        <summary>Settings</summary>
+        <div class="row">
+          <label>
+            <input id="toonMode" type="checkbox" checked />
+            Cartoon shading
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            <input id="hideTail" type="checkbox" checked />
+            Hide tail
+          </label>
+        </div>
+        <div class="row">
+          <label for="tailTuck">Tail tuck: <span id="tailTuckVal">100%</span></label>
+          <input id="tailTuck" type="range" min="-1" max="1" step="0.01" value="1" />
+        </div>
+        <div class="row">
+          <label for="tailHide">Tail pull-in: <span id="tailHideVal">50%</span></label>
+          <input id="tailHide" type="range" min="0" max="1" step="0.01" value="0.5" />
+        </div>
+        <div class="row">
+          <label for="speed">Animation speed: <span id="speedVal">100%</span></label>
+          <input id="speed" type="range" min="0" max="2" step="0.01" value="1" />
+        </div>
+      </details>
+    </div>
+
+    <template id="petTasksTemplate">
+      <h3>Daily Tasks</h3>
+      <p class="pet-mini-text">Complete self-care activities to earn ❤️ coins.</p>
+      <div id="petTasksList" class="pet-list"></div>
+    </template>
+
+    <template id="petActionTemplate">
+      <div class="pet-action-grid">
+        <button type="button" id="actionPlayBtn" class="pet-action-btn">Play</button>
+        <button type="button" id="actionSleepBtn" class="pet-action-btn">Sleep</button>
+        <button type="button" id="actionIdleBtn" class="pet-action-btn">Idle</button>
+      </div>
+    </template>
+
+    <template id="petShopTemplate">
+      <h3>Shop</h3>
+      <p class="pet-mini-text">Buy food for your capy.</p>
+      <div id="shopCoins" class="pet-mini-text" style="font-weight:700;color:#0f172a;"></div>
+      <div id="shopItemsList" class="pet-list"></div>
+    </template>
+
+    <template id="petInventoryTemplate">
+      <h3>Inventory</h3>
+      <p id="inventoryCoins" class="pet-mini-text" style="font-weight:700;color:#0f172a;"></p>
+      <div id="inventoryItemsList" class="pet-list"></div>
+    </template>
+
+    <template id="petInfoTemplate">
+      <h3>Pet Info</h3>
+      <p class="pet-mini-text">Name: <strong id="petInfoName">Cappy</strong></p>
+      <p class="pet-mini-text">Pet: <span id="petInfoSpecies">Capybara</span> • <span id="petInfoGender">Male</span></p>
+      <p id="petMood" class="pet-mini-text">Mood: Chill lang si capy.</p>
+      <div class="pet-stat-row">
+        <div class="pet-stat-head"><span>Hunger</span><span id="hungerValue">0%</span></div>
+        <div class="pet-stat-bar"><div id="hungerFill" class="pet-stat-fill" style="width:0%;"></div></div>
+      </div>
+      <div class="pet-stat-row">
+        <div class="pet-stat-head"><span>Energy</span><span id="energyValue">0%</span></div>
+        <div class="pet-stat-bar"><div id="energyFill" class="pet-stat-fill" style="width:0%;"></div></div>
+      </div>
+      <div class="pet-stat-row" style="margin-bottom:0;">
+        <div class="pet-stat-head"><span>Happiness</span><span id="happinessValue">0%</span></div>
+        <div class="pet-stat-bar"><div id="happinessFill" class="pet-stat-fill" style="width:0%;"></div></div>
+      </div>
+    </template>
+
+    <!-- Daily Tasks Modal -->
+    <div id="petTasksModal" class="pet-tasks-modal">
+      <div class="pet-tasks-sheet">
+        <div class="pet-tasks-header">
+          <button class="pet-tasks-close" id="closeTasksModal">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <h3>Daily Tasks</h3>
+          <div style="width:32px;"></div>
+        </div>
+        <div id="petTasksGrid" class="pet-tasks-grid"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/main.js?v=20260413001"></script>
+    <script>
+    // Daily Tasks Modal
+    const TASK_COLORS = {
+      'breathing-exercise': { bg: '#dbeafe', icon: '#3b82f6' },
+      'gratitude-journal':  { bg: '#fef9c3', icon: '#ca8a04' },
+      'morning-stretch':    { bg: '#fce7f3', icon: '#ec4899' },
+      'hydration-check':    { bg: '#cffafe', icon: '#0891b2' },
+      'mindful-walk':       { bg: '#dcfce7', icon: '#16a34a' },
+      'digital-detox':      { bg: '#f3e8ff', icon: '#9333ea' },
+      'meditation':         { bg: '#ffe4e6', icon: '#e11d48' },
+      'healthy-meal':       { bg: '#ffedd5', icon: '#ea580c' },
+      'creative-time':      { bg: '#fef3c7', icon: '#d97706' },
+      'social-connection':  { bg: '#e0f2fe', icon: '#0284c7' },
+      'evening-reflection': { bg: '#ede9fe', icon: '#7c3aed' },
+      'power-nap':          { bg: '#f0fdf4', icon: '#15803d' },
+    };
+    const TASK_COINS = {
+      'breathing-exercise': 25, 'gratitude-journal': 30, 'morning-stretch': 25,
+      'hydration-check': 80, 'mindful-walk': 35, 'digital-detox': 40,
+      'meditation': 30, 'healthy-meal': 35, 'creative-time': 30,
+      'social-connection': 25, 'evening-reflection': 30, 'power-nap': 25,
+    };
+
+    async function openPetTasksModal() {
+      const modal = document.getElementById('petTasksModal');
+      const grid = document.getElementById('petTasksGrid');
+      modal.classList.add('open');
+      grid.innerHTML = '<p style="font-size:0.8rem;color:#64748b;grid-column:1/-1;">Loading...</p>';
+
+      try {
+        const res = await fetch('/assets/self-care-activities.json');
+        const data = await res.json();
+        const activities = data.activities || [];
+
+        // Try to get progress from parent window
+        let progress = {};
+        try {
+          if (window.parent && window.parent.userSelfCareProgress) {
+            progress = window.parent.userSelfCareProgress;
+          }
+        } catch(e) {}
+
+        const today = new Date().toDateString();
+
+        // Sort: incomplete first, completed at bottom
+        const sorted = activities.slice().sort((a, b) => {
+          const aDone = (progress[a.id]?.lastCompleted && new Date(progress[a.id].lastCompleted).toDateString() === today) ? 1 : 0;
+          const bDone = (progress[b.id]?.lastCompleted && new Date(progress[b.id].lastCompleted).toDateString() === today) ? 1 : 0;
+          return aDone - bDone;
+        });
+
+        const completedCount = sorted.filter(a => {
+          const p = progress[a.id] || {};
+          return p.lastCompleted && new Date(p.lastCompleted).toDateString() === today;
+        }).length;
+
+        let html = '';
+        let dividerAdded = false;
+
+        sorted.forEach((a, i) => {
+          const c = TASK_COLORS[a.id] || { bg: '#f1f5f9', icon: '#64748b' };
+          const coins = TASK_COINS[a.id] || 20;
+          const prog = progress[a.id] || {};
+          const lastDone = prog.lastCompleted ? new Date(prog.lastCompleted).toDateString() : null;
+          const done = lastDone === today;
+
+          // Add divider before first completed item
+          if (done && !dividerAdded && completedCount > 0 && completedCount < sorted.length) {
+            dividerAdded = true;
+            html += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0;">
+              <div style="flex:1;height:1px;background:#e2e8f0;"></div>
+              <span style="font-size:0.7rem;font-weight:600;color:#94a3b8;white-space:nowrap;">Completed today</span>
+              <div style="flex:1;height:1px;background:#e2e8f0;"></div>
+            </div>`;
+          }
+
+          html += `
+            <button class="pet-task-card ${done ? 'done' : ''}"
+              style="--tc:${c.bg};--ti:${c.icon};"
+              onclick="handlePetTask('${a.id}', ${done})"
+              ${done ? 'disabled' : ''}>
+              <i class="bi ${a.icon}"></i>
+              <div class="tc-info">
+                <span class="tc-name">${a.title}</span>
+                <span class="tc-reward">
+                  ${done
+                    ? '<span style="color:#22c55e;font-weight:700;">✓ Completed</span>'
+                    : `<img src="/assets/logo/game-coin.png" style="width:11px;height:11px;vertical-align:middle;"> ${coins} coins`
+                  }
+                </span>
+              </div>
+              ${done
+                ? '<span class="pet-task-done-badge"><i class="bi bi-check-circle-fill" style="color:#22c55e;font-size:1.1rem;"></i></span>'
+                : '<span class="tc-arrow">›</span>'
+              }
+            </button>`;
+        });
+
+        grid.innerHTML = html;
+      } catch(e) {
+        grid.innerHTML = '<p style="font-size:0.8rem;color:#ef4444;grid-column:1/-1;">Failed to load tasks.</p>';
+      }
+    }
+
+    function handlePetTask(activityId, done) {
+      if (done) return;
+      document.getElementById('petTasksModal').classList.remove('open');
+      // Open the activity detail modal in the parent dashboard
+      try {
+        if (window.parent && window.parent.openActivityDetail) {
+          window.parent.openActivityDetail(activityId);
+        }
+      } catch(e) {
+        console.warn('Could not open activity in parent', e);
+      }
+    }
+
+    document.getElementById('openTasksPanel').addEventListener('click', openPetTasksModal);
+    document.getElementById('closeTasksModal').addEventListener('click', () => {
+      document.getElementById('petTasksModal').classList.remove('open');
+    });
+    document.getElementById('petTasksModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+    });
+
+    // Listen for coin updates from parent dashboard
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'heartCoins') {
+        const el = document.getElementById('petCoinBalance');
+        if (el) el.textContent = e.data.amount ?? 0;
+      }
+    });
+
+    // Sync coin balance from parent — wait until parent has fetched it
+    function syncCoinsFromParent() {
+      try {
+        const coins = window.parent._heartCoins;
+        if (coins !== undefined && coins !== null) {
+          const el = document.getElementById('petCoinBalance');
+          if (el) el.textContent = coins;
+          return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    // Keep retrying for up to 15 seconds
+    let attempts = 0;
+    const retry = setInterval(() => {
+      attempts++;
+      if (syncCoinsFromParent() || attempts > 30) clearInterval(retry);
+    }, 500);
+    </script>
+  </body>
+</html>

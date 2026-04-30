@@ -1,0 +1,433 @@
+/* GROUP DEBRIEFING STYLES */
+
+/* Debriefing Form Inputs */
+#debriefing-form-view .form-group {
+  margin-bottom: 24px;
+}
+
+#debriefing-form-view .form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+#debriefing-form-view .form-label i {
+  color: #3b82f6;
+  font-size: 1rem;
+}
+
+#debriefing-form-view .form-input,
+#debriefing-form-view .note-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+  font-family: inherit;
+  color: #1e293b;
+}
+
+#debriefing-form-view .form-input:focus,
+#debriefing-form-view .note-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+#debriefing-form-view .note-input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Visibility Toggle Buttons */
+.goal-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.goal-type-btn {
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.goal-type-btn:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.goal-type-btn:active {
+  transform: translateY(0);
+}
+
+.goal-type-btn.active {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.goal-type-btn.active i {
+  color: #3b82f6 !important;
+}
+
+.goal-type-btn i {
+  font-size: 1.5rem;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.goal-type-btn span {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+
+/* Member Selection List */
+.members-checkbox-list {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 0;
+  gap: 0;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.member-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  border: 2px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.member-card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.member-card.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+}
+
+.member-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.member-card.selected .member-avatar {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+}
+
+.member-name {
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 600;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+.member-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s ease;
+}
+
+.member-card.selected .member-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Old checkbox styles - remove */
+.member-checkbox-item {
+  display: none;
+}
+
+/* Action Buttons */
+#debriefing-form-view .mood-actions-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+#debriefing-form-view .btn-secondary {
+  flex: 1;
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#debriefing-form-view .btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+#debriefing-form-view .btn-secondary:active {
+  transform: translateY(0);
+}
+
+#debriefing-form-view .btn-primary {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#debriefing-form-view .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+#debriefing-form-view .btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Debriefing List View */
+.debriefing-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.04), rgba(99, 102, 241, 0.04));
+  border-radius: 0;
+  padding: 20px;
+  margin-bottom: 0;
+  border: none;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.debriefing-card:first-child {
+  border-top: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.debriefing-card:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(99, 102, 241, 0.08));
+}
+
+.debriefing-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.debriefing-card-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.debriefing-card-datetime {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.debriefing-card-datetime i {
+  color: #3b82f6;
+}
+
+.debriefing-card-description {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.debriefing-card-visibility {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #eff6ff;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* Empty State */
+.debriefing-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #94a3b8;
+}
+
+.debriefing-empty-state i {
+  font-size: 3rem;
+  opacity: 0.3;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.debriefing-empty-state p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+  .goal-type-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .debriefing-datetime-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .members-checkbox-list {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+  }
+  
+  .member-card {
+    padding: 14px 10px;
+  }
+  
+  .member-avatar {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+  
+  .member-name {
+    font-size: 0.85rem;
+  }
+  
+  #debriefing-form-view .mood-actions-row {
+    flex-direction: column;
+  }
+  
+  #debriefing-form-view .btn-secondary,
+  #debriefing-form-view .btn-primary {
+    width: 100%;
+  }
+  
+  #debriefing-form-view {
+    padding: 16px !important;
+  }
+  
+  .form-label {
+    font-size: 0.85rem !important;
+  }
+  
+  .form-input,
+  .note-input {
+    font-size: 0.95rem !important;
+    padding: 12px 14px !important;
+  }
+}
+
+
+/* ── Dark Mode ─────────────────────────────────────────────────── */
+body.dark-mode .members-checkbox-list {
+  background: #1e2124;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .member-card {
+  background: #2a2d31;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+}
+
+body.dark-mode .member-card:hover {
+  border-color: #3b82f6;
+}
+
+body.dark-mode .member-card.selected {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: #3b82f6;
+}
+
+body.dark-mode .member-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .debriefing-section-label {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .visibility-btn-label {
+  color: #f1f5f9 !important;
+}
+
+body.dark-mode .goal-type-btn {
+  background: #2a2d31 !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .goal-type-btn.active {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: #3b82f6 !important;
+}
